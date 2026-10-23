@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Street Games</title>
-<meta name="description" content="Three street sports from three continents, built as tiny clay worlds: Galli Cricket, Panna Cage and Block Hoops. Free in your browser.">
+<meta name="description" content="Four street sports from around the world, built as tiny clay worlds: Galli Cricket, Panna Cage, Block Hoops and Sand Spike. Free in your browser.">
 <meta property="og:title" content="Street Games">
-<meta property="og:description" content="Galli Cricket, Panna Cage and Block Hoops: street cricket, street football and streetball as tiny clay worlds. Free in your browser.">
+<meta property="og:description" content="Galli Cricket, Panna Cage, Block Hoops and Sand Spike: street cricket, street football, streetball and beach volleyball as tiny clay worlds. Free in your browser.">
 <meta property="og:image" content="https://muhammadalims.github.io/img/og.jpg">
 <meta property="og:url" content="https://muhammadalims.github.io/">
 <meta name="twitter:card" content="summary_large_image">
@@ -25,6 +25,7 @@
   --red: #d6402b;       /* cricket */
   --teal: #2c8c86;      /* football */
   --orange: #e8742c;    /* basketball */
+  --sky: #3a86c8;       /* volleyball */
   --muted: #6f665b;
   --display: "Bungee", "Arial Black", system-ui, sans-serif;
   --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -45,11 +46,12 @@ header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content:
 .chip { font: 700 11px var(--pixel); letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--chalk); padding: 6px 11px; border-radius: 999px; }
 .chip.light { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
 
-.games { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; align-items: stretch; }
+.games { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: stretch; }
 .card { --accent: var(--red); background: var(--chalk); border: 3px solid var(--ink); border-radius: 26px; box-shadow: 0 9px 0 var(--ink); overflow: hidden; display: flex; flex-direction: column; transition: transform .2s ease, box-shadow .2s ease; }
 .card:hover { transform: translateY(-4px); box-shadow: 0 13px 0 var(--ink); }
 .card.football { --accent: var(--teal); }
 .card.hoops { --accent: var(--orange); }
+.card.volley { --accent: var(--sky); }
 .shot { position: relative; aspect-ratio: 3 / 2; max-width: 100%; overflow: hidden; border-bottom: 3px solid var(--ink); background: #efe5d6; }
 .shot img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
 .card:hover .shot img { transform: scale(1.04); }
@@ -88,7 +90,7 @@ footer a { color: var(--ink); font-weight: 700; }
   <header>
     <h1 class="mark">STREET <span>GAMES</span></h1>
     <div class="pitch">
-      <p>Three street sports from three continents, built as tiny clay worlds. Every one has its own house rules. Free in your browser, nothing to download.</p>
+      <p>Four street sports from around the world, built as tiny clay worlds. Every one has its own house rules. Free in your browser, nothing to download.</p>
       <div class="chips"><span class="chip">vs AI</span><span class="chip">2 players</span><span class="chip">phone + keyboard</span><span class="chip light">built with Claude</span></div>
     </div>
   </header>
@@ -142,11 +144,27 @@ footer a { color: var(--ink); font-weight: 700; }
         <div class="actions"><a class="play" href="/block-hoops/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/block-hoops">CODE</a></div>
       </div>
     </article>
+
+    <article class="card volley">
+      <div class="shot"><img src="img/sand-spike-copa.jpg" alt="Clay diorama of a beach volleyball court on Copacabana, with the wave-pattern promenade and the ocean" width="1500" height="1000"><span class="sport">BEACH VOLLEYBALL · RIO · LA · SYDNEY</span></div>
+      <div class="body">
+        <h2>SAND <span>SPIKE</span></h2>
+        <p>Two on two on the sand. Bump it to your partner, take the set, and spike it past the block. First to 15, win by two.</p>
+        <div class="grounds three">
+          <div class="ground"><img src="img/sand-spike-copa.jpg" alt="" loading="lazy"><span>Copacabana</span></div>
+          <div class="ground"><img src="img/sand-spike-santa.jpg" alt="" loading="lazy"><span>Santa Monica</span></div>
+          <div class="ground"><img src="img/sand-spike-bondi.jpg" alt="" loading="lazy"><span>Bondi Sunset</span></div>
+        </div>
+        <div class="rule"><b>BONDI</b>Land it in the surf and the point goes to them.</div>
+        <div class="modes"><span class="chip light">2v2 with AI partner</span><span class="chip light">2 players</span><span class="chip light">first to 15</span></div>
+        <div class="actions"><a class="play" href="/sand-spike/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/sand-spike">CODE</a></div>
+      </div>
+    </article>
   </main>
 
   <footer>
     <p>On a phone, turn it sideways: every game plays in landscape with a thumb stick and action buttons. On a computer, the keys are listed on each game's start screen.</p>
-    <p>All three games are open source on <a href="https://github.com/MuhammadaliMS">GitHub</a>.</p>
+    <p>All four games are open source on <a href="https://github.com/MuhammadaliMS">GitHub</a>.</p>
   </footer>
 </div>
 </body>
