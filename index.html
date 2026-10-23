@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Street Games</title>
+<meta name="description" content="Three street sports from three continents, built as tiny clay worlds: Galli Cricket, Panna Cage and Block Hoops. Free in your browser.">
+<meta property="og:title" content="Street Games">
+<meta property="og:description" content="Galli Cricket, Panna Cage and Block Hoops: street cricket, street football and streetball as tiny clay worlds. Free in your browser.">
+<meta property="og:image" content="https://muhammadalims.github.io/img/og.jpg">
+<meta property="og:url" content="https://muhammadalims.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f6efe4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23d6402b' stroke='%231d1a17' stroke-width='3'/%3E%3Cpath d='M6 12q10 4 20 0M6 20q10-4 20 0' stroke='%23fbf8f1' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Figtree:wght@500;700;800&family=Silkscreen:wght@400;700&display=swap">
+<style>
+/* Layout: one header, then three equal game cards (stacking on phones), each a self-contained "box art" panel. */
+:root {
+  --paper: #f6efe4;     /* page ground, same warm backdrop as the games */
+  --ink: #1d1a17;       /* outlines, type */
+  --chalk: #fbf8f1;     /* card face */
+  --marigold: #f3a712;  /* play buttons */
+  --red: #d6402b;       /* cricket */
+  --teal: #2c8c86;      /* football */
+  --orange: #e8742c;    /* basketball */
+  --muted: #6f665b;
+  --display: "Bungee", "Arial Black", system-ui, sans-serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --pixel: "Silkscreen", ui-monospace, "Courier New", monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); }
+body { padding: calc(28px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(40px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 34px; }
+
+header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 18px 40px; }
+.mark { margin: 0; font: 400 clamp(46px, 8vw, 92px)/0.9 var(--display); letter-spacing: 0.01em; }
+.mark span { color: var(--red); display: block; }
+.pitch { max-width: 470px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 6px; }
+.pitch p { margin: 0; font-size: 19px; line-height: 1.45; font-weight: 500; text-wrap: pretty; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 700 11px var(--pixel); letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--chalk); padding: 6px 11px; border-radius: 999px; }
+.chip.light { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+
+.games { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; align-items: stretch; }
+.card { --accent: var(--red); background: var(--chalk); border: 3px solid var(--ink); border-radius: 26px; box-shadow: 0 9px 0 var(--ink); overflow: hidden; display: flex; flex-direction: column; transition: transform .2s ease, box-shadow .2s ease; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 13px 0 var(--ink); }
+.card.football { --accent: var(--teal); }
+.card.hoops { --accent: var(--orange); }
+.shot { position: relative; aspect-ratio: 3 / 2; max-width: 100%; overflow: hidden; border-bottom: 3px solid var(--ink); background: #efe5d6; }
+.shot img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+.card:hover .shot img { transform: scale(1.04); }
+.sport { position: absolute; left: 14px; top: 14px; max-width: calc(100% - 28px); line-height: 1.5; font: 700 11px var(--pixel); letter-spacing: 0.1em; background: var(--accent); color: var(--chalk); padding: 7px 11px; border-radius: 999px; box-shadow: 0 3px 0 var(--ink); }
+.body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.body h2 { margin: 0; font: 400 34px/0.95 var(--display); }
+.body h2 span { color: var(--accent); }
+.body p { margin: 0; font-size: 16px; line-height: 1.5; color: #3a342d; min-height: 4.5em; }
+.grounds { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.grounds.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ground { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.ground img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; border: 2px solid var(--ink); display: block; background: #efe5d6; }
+.ground span { font: 700 9.5px/1.2 var(--pixel); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); overflow-wrap: anywhere; }
+.rule { display: flex; gap: 10px; align-items: baseline; background: var(--paper); border-radius: 14px; padding: 10px 12px; font-weight: 700; font-size: 15px; }
+.rule b { font: 400 13px var(--display); color: var(--chalk); background: var(--accent); padding: 2px 8px 4px; border-radius: 8px; white-space: nowrap; }
+.modes { display: flex; flex-wrap: wrap; gap: 6px; }
+.actions { margin-top: auto; display: flex; gap: 10px; align-items: center; padding-top: 4px; }
+.play { flex: 1; text-align: center; text-decoration: none; background: var(--marigold); color: var(--ink); font: 400 21px var(--display); padding: 14px 16px; border-radius: 16px; border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink); transition: transform .12s ease, box-shadow .12s ease; }
+.play:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--ink); }
+.play:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+.src { text-decoration: none; color: var(--ink); font: 700 12px var(--pixel); letter-spacing: 0.08em; padding: 14px 12px; border-radius: 14px; box-shadow: inset 0 0 0 2px var(--ink); white-space: nowrap; }
+.src:hover { background: var(--ink); color: var(--chalk); }
+a:focus-visible { outline: 3px solid var(--accent, var(--red)); outline-offset: 3px; }
+
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 30px; padding-top: 18px; border-top: 3px dashed rgba(29, 26, 23, .2); font-size: 15px; color: var(--muted); }
+footer p { margin: 0; max-width: 62ch; line-height: 1.5; }
+footer a { color: var(--ink); font-weight: 700; }
+
+@media (max-width: 960px) { .games { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin: 0 auto; width: 100%; } .body p { min-height: 0; } }
+@media (max-width: 420px) { .body h2 { font-size: 29px; } .grounds { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grounds.three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .card, .shot img, .play { transition: none; } .card:hover, .card:hover .shot img { transform: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 class="mark">STREET <span>GAMES</span></h1>
+    <div class="pitch">
+      <p>Three street sports from three continents, built as tiny clay worlds. Every one has its own house rules. Free in your browser, nothing to download.</p>
+      <div class="chips"><span class="chip">vs AI</span><span class="chip">2 players</span><span class="chip">phone + keyboard</span><span class="chip light">built with Claude</span></div>
+    </div>
+  </header>
+
+  <main class="games">
+    <article class="card cricket">
+      <div class="shot"><img src="img/galli-cricket-gully.jpg" alt="Clay diorama of a narrow Indian lane with three pastel houses, a batter at the crease and fielders" width="1500" height="1000"><span class="sport">STREET CRICKET · INDIA</span></div>
+      <div class="body">
+        <h2>GALLI <span>CRICKET</span></h2>
+        <p>Chase the target in two overs down a narrow lane, where Verma uncle guards his windows from the balcony.</p>
+        <div class="grounds">
+          <div class="ground"><img src="img/galli-cricket-gully.jpg" alt="" loading="lazy"><span>The Gully</span></div>
+          <div class="ground"><img src="img/galli-cricket-chhat.jpg" alt="" loading="lazy"><span>The Chhat</span></div>
+          <div class="ground"><img src="img/galli-cricket-beach.jpg" alt="" loading="lazy"><span>Juhu Beach</span></div>
+          <div class="ground"><img src="img/galli-cricket-parking.jpg" alt="" loading="lazy"><span>Society Parking</span></div>
+        </div>
+        <div class="rule"><b>OUT</b>Break a window, or hit it into a house.</div>
+        <div class="modes"><span class="chip light">Bat</span><span class="chip light">Bowl</span><span class="chip light">2 players</span></div>
+        <div class="actions"><a class="play" href="/galli-cricket/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/galli-cricket">CODE</a></div>
+      </div>
+    </article>
+
+    <article class="card football">
+      <div class="shot"><img src="img/panna-cage-rio.jpg" alt="Clay diorama of a rooftop football pitch above colourful stacked houses" width="1500" height="1000"><span class="sport">STREET FOOTBALL · LONDON · RIO · PARIS</span></div>
+      <div class="body">
+        <h2>PANNA <span>CAGE</span></h2>
+        <p>One on one in the cage. Nutmeg your opponent and collect the ball behind them for a bonus point.</p>
+        <div class="grounds three">
+          <div class="ground"><img src="img/panna-cage-london.jpg" alt="" loading="lazy"><span>London Estate</span></div>
+          <div class="ground"><img src="img/panna-cage-rio.jpg" alt="" loading="lazy"><span>Rio Rooftop</span></div>
+          <div class="ground"><img src="img/panna-cage-paris.jpg" alt="" loading="lazy"><span>Paris Cité</span></div>
+        </div>
+        <div class="rule"><b>RIO</b>Ball off the roof: their ball, and you go fetch it.</div>
+        <div class="modes"><span class="chip light">1v1 vs AI</span><span class="chip light">2 players</span><span class="chip light">first to 5</span></div>
+        <div class="actions"><a class="play" href="/panna-cage/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/panna-cage">CODE</a></div>
+      </div>
+    </article>
+
+    <article class="card hoops">
+      <div class="shot"><img src="img/block-hoops-manila.jpg" alt="Clay diorama of a basketball court between Manila houses, with a parked jeepney" width="1500" height="1000"><span class="sport">STREETBALL · NYC · MANILA · VENICE</span></div>
+      <div class="body">
+        <h2>BLOCK <span>HOOPS</span></h2>
+        <p>One on one to 11. Ones and twos, make it take it, and take it back past the arc after every stop.</p>
+        <div class="grounds three">
+          <div class="ground"><img src="img/block-hoops-nyc.jpg" alt="" loading="lazy"><span>NYC Park Cage</span></div>
+          <div class="ground"><img src="img/block-hoops-manila.jpg" alt="" loading="lazy"><span>Manila Barangay</span></div>
+          <div class="ground"><img src="img/block-hoops-venice.jpg" alt="" loading="lazy"><span>Venice Beach</span></div>
+        </div>
+        <div class="rule"><b>MANILA</b>Hit the jeepney and it's a turnover.</div>
+        <div class="modes"><span class="chip light">1v1 vs AI</span><span class="chip light">2 players</span><span class="chip light">first to 11</span></div>
+        <div class="actions"><a class="play" href="/block-hoops/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/block-hoops">CODE</a></div>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <p>On a phone, turn it sideways: every game plays in landscape with a thumb stick and action buttons. On a computer, the keys are listed on each game's start screen.</p>
+    <p>All three games are open source on <a href="https://github.com/MuhammadaliMS">GitHub</a>.</p>
+  </footer>
+</div>
+</body>
+</html>
