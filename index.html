@@ -16,12 +16,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Figtree:wght@500;700;800&family=Silkscreen:wght@400;700&display=swap">
 <style>
-/* Layout: one header, then equal game cards (stacking on phones), each a self-contained "box art" panel. */
+/* Layout: a short header, then a grid of small game cards (4 / 2 / 1 columns). Each card is one link to the game;
+   hovering it cycles through that game's grounds. The eighth tile invites people to build their own. */
 :root {
   --paper: #f6efe4;     /* page ground, same warm backdrop as the games */
   --ink: #1d1a17;       /* outlines, type */
   --chalk: #fbf8f1;     /* card face */
-  --marigold: #f3a712;  /* play buttons */
+  --marigold: #f3a712;  /* play */
   --red: #d6402b;       /* cricket */
   --teal: #2c8c86;      /* football */
   --orange: #e8742c;    /* basketball */
@@ -37,190 +38,203 @@
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); }
-body { padding: calc(28px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(40px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
-.wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 34px; }
+body { padding: calc(36px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(40px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
 
-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 18px 40px; }
-.mark { margin: 0; font: 400 clamp(46px, 8vw, 92px)/0.9 var(--display); letter-spacing: 0.01em; }
-.mark span { color: var(--red); display: block; }
-.pitch { max-width: 470px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 6px; }
-.pitch p { margin: 0; font-size: 19px; line-height: 1.45; font-weight: 500; text-wrap: pretty; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { font: 700 11px var(--pixel); letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--chalk); padding: 6px 11px; border-radius: 999px; }
-.chip.light { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 40px; }
+.mark { margin: 0; font: 400 clamp(42px, 6.4vw, 76px)/0.9 var(--display); letter-spacing: 0.01em; }
+.mark span { color: var(--red); }
+.pitch { max-width: 440px; margin: 0; font-size: 17px; line-height: 1.5; font-weight: 500; color: #3a342d; text-wrap: pretty; padding-bottom: 4px; }
+.pitch b { color: var(--ink); font-weight: 800; }
 
-.games { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: stretch; }
-.card { --accent: var(--red); background: var(--chalk); border: 3px solid var(--ink); border-radius: 26px; box-shadow: 0 9px 0 var(--ink); overflow: hidden; display: flex; flex-direction: column; transition: transform .2s ease, box-shadow .2s ease; }
-.card:hover { transform: translateY(-4px); box-shadow: 0 13px 0 var(--ink); }
+.games { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.card { --accent: var(--red); position: relative; background: var(--chalk); border: 2.5px solid var(--ink); border-radius: 20px; box-shadow: 0 6px 0 var(--ink); overflow: hidden; display: flex; flex-direction: column; transition: transform .18s ease, box-shadow .18s ease; }
+.card:hover, .card:focus-within { transform: translateY(-3px); box-shadow: 0 9px 0 var(--ink); }
 .card.football { --accent: var(--teal); }
 .card.hoops { --accent: var(--orange); }
 .card.volley { --accent: var(--sky); }
 .card.tennis { --accent: var(--grass); }
 .card.badminton { --accent: var(--pink); }
 .card.hockey { --accent: var(--navy); }
-.shot { position: relative; aspect-ratio: 3 / 2; max-width: 100%; overflow: hidden; border-bottom: 3px solid var(--ink); background: #efe5d6; }
-.shot img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
-.card:hover .shot img { transform: scale(1.04); }
-.sport { position: absolute; left: 14px; top: 14px; max-width: calc(100% - 28px); line-height: 1.5; font: 700 11px var(--pixel); letter-spacing: 0.1em; background: var(--accent); color: var(--chalk); padding: 7px 11px; border-radius: 999px; box-shadow: 0 3px 0 var(--ink); }
-.body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
-.body h2 { margin: 0; font: 400 34px/0.95 var(--display); }
-.body h2 span { color: var(--accent); }
-.body p { margin: 0; font-size: 16px; line-height: 1.5; color: #3a342d; min-height: 4.5em; }
-.grounds { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-.grounds.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.ground { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-.ground img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; border: 2px solid var(--ink); display: block; background: #efe5d6; }
-.ground span { font: 700 9.5px/1.2 var(--pixel); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); overflow-wrap: anywhere; }
-.rule { display: flex; gap: 10px; align-items: baseline; background: var(--paper); border-radius: 14px; padding: 10px 12px; font-weight: 700; font-size: 15px; }
-.rule b { font: 400 13px var(--display); color: var(--chalk); background: var(--accent); padding: 2px 8px 4px; border-radius: 8px; white-space: nowrap; }
-.modes { display: flex; flex-wrap: wrap; gap: 6px; }
-.actions { margin-top: auto; display: flex; gap: 10px; align-items: center; padding-top: 4px; }
-.play { flex: 1; text-align: center; text-decoration: none; background: var(--marigold); color: var(--ink); font: 400 21px var(--display); padding: 14px 16px; border-radius: 16px; border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink); transition: transform .12s ease, box-shadow .12s ease; }
-.play:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--ink); }
-.play:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
-.src { text-decoration: none; color: var(--ink); font: 700 12px var(--pixel); letter-spacing: 0.08em; padding: 14px 12px; border-radius: 14px; box-shadow: inset 0 0 0 2px var(--ink); white-space: nowrap; }
-.src:hover { background: var(--ink); color: var(--chalk); }
-a:focus-visible { outline: 3px solid var(--accent, var(--red)); outline-offset: 3px; }
 
-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 30px; padding-top: 18px; border-top: 3px dashed rgba(29, 26, 23, .2); font-size: 15px; color: var(--muted); }
+.shot { position: relative; aspect-ratio: 3 / 2; overflow: hidden; border-bottom: 2.5px solid var(--ink); background: #efe5d6; }
+.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity .45s ease; }
+.shot img.on { opacity: 1; }
+.tag { position: absolute; left: 10px; top: 10px; font: 700 10px/1 var(--pixel); letter-spacing: 0.1em; background: var(--accent); color: var(--chalk); padding: 6px 9px; border-radius: 999px; box-shadow: 0 2px 0 var(--ink); }
+.where { position: absolute; left: 10px; bottom: 10px; font: 700 10px/1 var(--pixel); letter-spacing: 0.08em; text-transform: uppercase; background: rgba(251, 248, 241, .92); color: var(--ink); padding: 6px 9px; border-radius: 999px; }
+
+.body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.body h2 { margin: 0; font: 400 23px/1 var(--display); }
+.body h2 span { color: var(--accent); }
+.body h2 a { color: inherit; text-decoration: none; }
+.body h2 a::after { content: ""; position: absolute; inset: 0; z-index: 1; }  /* the whole card is the play link */
+.body p { margin: 0; font-size: 14.5px; line-height: 1.45; color: #3a342d; text-wrap: pretty; }
+.meta { margin-top: auto; padding-top: 6px; display: flex; align-items: center; gap: 10px; }
+.info { flex: 1; min-width: 0; font: 700 13px/1.3 var(--body); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.src { position: relative; z-index: 2; font: 700 13px/1 var(--body); color: var(--muted); text-decoration: underline; text-decoration-color: rgba(29, 26, 23, .25); text-underline-offset: 3px; padding: 8px 2px; }
+.src:hover { color: var(--ink); text-decoration: underline; }
+.go { font: 400 14px/1 var(--display); background: var(--marigold); padding: 8px 12px 9px; border-radius: 11px; border: 2px solid var(--ink); box-shadow: 0 3px 0 var(--ink); transition: transform .12s ease, box-shadow .12s ease; }
+.card:hover .go { transform: translateY(-1px); box-shadow: 0 4px 0 var(--ink); }
+
+.card.yours { background: var(--ink); color: var(--chalk); justify-content: space-between; padding: 20px 18px 18px; gap: 16px; }
+.yours .tag { position: static; align-self: flex-start; background: var(--chalk); color: var(--ink); box-shadow: none; }
+.yours h2 { margin: 0; font: 400 30px/0.95 var(--display); }
+.yours h2 span { color: var(--marigold); }
+.yours h2 a { color: inherit; text-decoration: none; }
+.yours h2 a::after { content: ""; position: absolute; inset: 0; }
+.yours p { margin: 0; font-size: 14.5px; line-height: 1.45; color: rgba(251, 248, 241, .78); }
+.yours .go { align-self: flex-start; color: var(--ink); border-color: var(--chalk); box-shadow: 0 3px 0 var(--chalk); }
+
+a:focus-visible { outline: none; }
+.card:has(a:focus-visible) { outline: 3px solid var(--accent, var(--red)); outline-offset: 3px; }
+.src:focus-visible { outline: 2px solid var(--ink); border-radius: 6px; }
+
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 30px; padding-top: 18px; border-top: 2px dashed rgba(29, 26, 23, .2); font-size: 14.5px; color: var(--muted); }
 footer p { margin: 0; max-width: 62ch; line-height: 1.5; }
 footer a { color: var(--ink); font-weight: 700; }
 
-@media (min-width: 961px) { .games > .card:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 15px); justify-self: center; } }
-@media (max-width: 960px) { .games { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin: 0 auto; width: 100%; } .body p { min-height: 0; } }
-@media (max-width: 420px) { .body h2 { font-size: 29px; } .grounds { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grounds.three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (prefers-reduced-motion: reduce) { .card, .shot img, .play { transition: none; } .card:hover, .card:hover .shot img { transform: none; } }
+@media (max-width: 1100px) { .games { grid-template-columns: repeat(2, minmax(0, 1fr)); } .body h2 { font-size: 26px; } }
+@media (max-width: 620px) {
+  body { padding-top: calc(24px + env(safe-area-inset-top, 0px)); }
+  .wrap { gap: 26px; }
+  .games { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .pitch { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .card, .shot img, .go { transition: none; } .card:hover, .card:focus-within { transform: none; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1 class="mark">STREET <span>GAMES</span></h1>
-    <div class="pitch">
-      <p>Seven street sports from around the world, built as tiny clay worlds. Every one has its own house rules. Free in your browser, nothing to download.</p>
-      <div class="chips"><span class="chip">vs AI</span><span class="chip">2 players</span><span class="chip">phone + keyboard</span><span class="chip light">built with Claude</span></div>
-    </div>
+    <p class="pitch">Seven street sports from around the world, built as tiny clay worlds, each with its own house rules. <b>Free in your browser</b>: play the AI or a friend, on a phone or a keyboard.</p>
   </header>
 
   <main class="games">
     <article class="card cricket">
-      <div class="shot"><img src="img/galli-cricket-gully.jpg" alt="Clay diorama of a narrow Indian lane with three pastel houses, a batter at the crease and fielders" width="1500" height="1000"><span class="sport">STREET CRICKET · INDIA</span></div>
+      <div class="shot">
+        <img class="on" src="img/galli-cricket-gully.jpg" alt="Clay diorama of a narrow Indian lane with pastel houses, a batter at the crease and fielders" data-where="The Gully" width="1500" height="1000">
+        <img src="img/galli-cricket-chhat.jpg" alt="" data-where="The Chhat" loading="lazy">
+        <img src="img/galli-cricket-beach.jpg" alt="" data-where="Juhu Beach" loading="lazy">
+        <img src="img/galli-cricket-parking.jpg" alt="" data-where="Society Parking" loading="lazy">
+        <span class="tag">CRICKET</span><span class="where">The Gully</span>
+      </div>
       <div class="body">
-        <h2>GALLI <span>CRICKET</span></h2>
-        <p>Chase the target in two overs down a narrow lane, where Verma uncle guards his windows from the balcony.</p>
-        <div class="grounds">
-          <div class="ground"><img src="img/galli-cricket-gully.jpg" alt="" loading="lazy"><span>The Gully</span></div>
-          <div class="ground"><img src="img/galli-cricket-chhat.jpg" alt="" loading="lazy"><span>The Chhat</span></div>
-          <div class="ground"><img src="img/galli-cricket-beach.jpg" alt="" loading="lazy"><span>Juhu Beach</span></div>
-          <div class="ground"><img src="img/galli-cricket-parking.jpg" alt="" loading="lazy"><span>Society Parking</span></div>
-        </div>
-        <div class="rule"><b>OUT</b>Break a window, or hit it into a house.</div>
-        <div class="modes"><span class="chip light">Bat</span><span class="chip light">Bowl</span><span class="chip light">2 players</span></div>
-        <div class="actions"><a class="play" href="/galli-cricket/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/galli-cricket">CODE</a></div>
+        <h2><a href="/galli-cricket/">GALLI <span>CRICKET</span></a></h2>
+        <p>Chase the target in two overs. Break Verma uncle's window and you're out.</p>
+        <div class="meta"><span class="info">4 grounds · 2 overs</span><a class="src" href="https://github.com/MuhammadaliMS/galli-cricket">Code</a><span class="go" aria-hidden="true">PLAY</span></div>
       </div>
     </article>
 
     <article class="card football">
-      <div class="shot"><img src="img/panna-cage-rio.jpg" alt="Clay diorama of a rooftop football pitch above colourful stacked houses" width="1500" height="1000"><span class="sport">STREET FOOTBALL · LONDON · RIO · PARIS</span></div>
+      <div class="shot">
+        <img class="on" src="img/panna-cage-rio.jpg" alt="Clay diorama of a rooftop football pitch above colourful stacked houses" data-where="Rio Rooftop" width="1500" height="1000">
+        <img src="img/panna-cage-london.jpg" alt="" data-where="London Estate" loading="lazy">
+        <img src="img/panna-cage-paris.jpg" alt="" data-where="Paris Cité" loading="lazy">
+        <span class="tag">FOOTBALL</span><span class="where">Rio Rooftop</span>
+      </div>
       <div class="body">
-        <h2>PANNA <span>CAGE</span></h2>
-        <p>One on one in the cage. Nutmeg your opponent and collect the ball behind them for a bonus point.</p>
-        <div class="grounds three">
-          <div class="ground"><img src="img/panna-cage-london.jpg" alt="" loading="lazy"><span>London Estate</span></div>
-          <div class="ground"><img src="img/panna-cage-rio.jpg" alt="" loading="lazy"><span>Rio Rooftop</span></div>
-          <div class="ground"><img src="img/panna-cage-paris.jpg" alt="" loading="lazy"><span>Paris Cité</span></div>
-        </div>
-        <div class="rule"><b>RIO</b>Ball off the roof: their ball, and you go fetch it.</div>
-        <div class="modes"><span class="chip light">1v1 vs AI</span><span class="chip light">2 players</span><span class="chip light">first to 5</span></div>
-        <div class="actions"><a class="play" href="/panna-cage/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/panna-cage">CODE</a></div>
+        <h2><a href="/panna-cage/">PANNA <span>CAGE</span></a></h2>
+        <p>One on one in the cage. Nutmeg your opponent for a bonus point.</p>
+        <div class="meta"><span class="info">3 grounds · 1v1</span><a class="src" href="https://github.com/MuhammadaliMS/panna-cage">Code</a><span class="go" aria-hidden="true">PLAY</span></div>
       </div>
     </article>
 
     <article class="card hoops">
-      <div class="shot"><img src="img/block-hoops-manila.jpg" alt="Clay diorama of a basketball court between Manila houses, with a parked jeepney" width="1500" height="1000"><span class="sport">STREETBALL · NYC · MANILA · VENICE</span></div>
+      <div class="shot">
+        <img class="on" src="img/block-hoops-manila.jpg" alt="Clay diorama of a basketball court between Manila houses, with a parked jeepney" data-where="Manila Barangay" width="1500" height="1000">
+        <img src="img/block-hoops-nyc.jpg" alt="" data-where="NYC Park Cage" loading="lazy">
+        <img src="img/block-hoops-venice.jpg" alt="" data-where="Venice Beach" loading="lazy">
+        <span class="tag">STREETBALL</span><span class="where">Manila Barangay</span>
+      </div>
       <div class="body">
-        <h2>BLOCK <span>HOOPS</span></h2>
-        <p>One on one to 11. Ones and twos, make it take it, and take it back past the arc after every stop.</p>
-        <div class="grounds three">
-          <div class="ground"><img src="img/block-hoops-nyc.jpg" alt="" loading="lazy"><span>NYC Park Cage</span></div>
-          <div class="ground"><img src="img/block-hoops-manila.jpg" alt="" loading="lazy"><span>Manila Barangay</span></div>
-          <div class="ground"><img src="img/block-hoops-venice.jpg" alt="" loading="lazy"><span>Venice Beach</span></div>
-        </div>
-        <div class="rule"><b>MANILA</b>Hit the jeepney and it's a turnover.</div>
-        <div class="modes"><span class="chip light">1v1 vs AI</span><span class="chip light">2 players</span><span class="chip light">first to 11</span></div>
-        <div class="actions"><a class="play" href="/block-hoops/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/block-hoops">CODE</a></div>
+        <h2><a href="/block-hoops/">BLOCK <span>HOOPS</span></a></h2>
+        <p>One on one to 11. Hit the jeepney in Manila and it's a turnover.</p>
+        <div class="meta"><span class="info">3 grounds · 1v1</span><a class="src" href="https://github.com/MuhammadaliMS/block-hoops">Code</a><span class="go" aria-hidden="true">PLAY</span></div>
       </div>
     </article>
 
     <article class="card volley">
-      <div class="shot"><img src="img/sand-spike-copa.jpg" alt="Clay diorama of a beach volleyball court on Copacabana, with the wave-pattern promenade and the ocean" width="1500" height="1000"><span class="sport">BEACH VOLLEYBALL · RIO · LA · SYDNEY</span></div>
+      <div class="shot">
+        <img class="on" src="img/sand-spike-copa.jpg" alt="Clay diorama of a beach volleyball court on Copacabana, with the wave-pattern promenade and the ocean" data-where="Copacabana" width="1500" height="1000">
+        <img src="img/sand-spike-santa.jpg" alt="" data-where="Santa Monica" loading="lazy">
+        <img src="img/sand-spike-bondi.jpg" alt="" data-where="Bondi Sunset" loading="lazy">
+        <span class="tag">BEACH VOLLEYBALL</span><span class="where">Copacabana</span>
+      </div>
       <div class="body">
-        <h2>SAND <span>SPIKE</span></h2>
-        <p>Two on two on the sand. Bump it to your partner, take the set, and spike it past the block. First to 15, win by two.</p>
-        <div class="grounds three">
-          <div class="ground"><img src="img/sand-spike-copa.jpg" alt="" loading="lazy"><span>Copacabana</span></div>
-          <div class="ground"><img src="img/sand-spike-santa.jpg" alt="" loading="lazy"><span>Santa Monica</span></div>
-          <div class="ground"><img src="img/sand-spike-bondi.jpg" alt="" loading="lazy"><span>Bondi Sunset</span></div>
-        </div>
-        <div class="rule"><b>BONDI</b>Land it in the surf and the point goes to them.</div>
-        <div class="modes"><span class="chip light">2v2 with AI partner</span><span class="chip light">2 players</span><span class="chip light">first to 15</span></div>
-        <div class="actions"><a class="play" href="/sand-spike/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/sand-spike">CODE</a></div>
+        <h2><a href="/sand-spike/">SAND <span>SPIKE</span></a></h2>
+        <p>Two on two on the sand. Land it in Bondi's surf and the point is theirs.</p>
+        <div class="meta"><span class="info">3 grounds · 2v2</span><a class="src" href="https://github.com/MuhammadaliMS/sand-spike">Code</a><span class="go" aria-hidden="true">PLAY</span></div>
       </div>
     </article>
 
     <article class="card tennis">
-      <div class="shot"><img src="img/ace-alley-paris.jpg" alt="Clay diorama of a red clay tennis court between cream Paris buildings with a café terrace" width="1500" height="1000" loading="lazy"><span class="sport">STREET TENNIS · PARIS · NYC · TOKYO</span></div>
+      <div class="shot">
+        <img class="on" src="img/ace-alley-paris.jpg" alt="Clay diorama of a red clay tennis court between cream Paris buildings with a café terrace" data-where="Paris Clay" width="1500" height="1000" loading="lazy">
+        <img src="img/ace-alley-queens.jpg" alt="" data-where="Queens" loading="lazy">
+        <img src="img/ace-alley-tokyo.jpg" alt="" data-where="Tokyo Rooftop" loading="lazy">
+        <span class="tag">TENNIS</span><span class="where">Paris Clay</span>
+      </div>
       <div class="body">
-        <h2>ACE <span>ALLEY</span></h2>
-        <p>Singles on the city's public courts. Real tennis scoring, first to three games, and every court bends the rules a little.</p>
-        <div class="grounds three">
-          <div class="ground"><img src="img/ace-alley-paris.jpg" alt="" loading="lazy"><span>Paris Clay</span></div>
-          <div class="ground"><img src="img/ace-alley-queens.jpg" alt="" loading="lazy"><span>Queens</span></div>
-          <div class="ground"><img src="img/ace-alley-tokyo.jpg" alt="" loading="lazy"><span>Tokyo Rooftop</span></div>
-        </div>
-        <div class="rule"><b>QUEENS</b>A train rumbles overhead: that point counts double.</div>
-        <div class="modes"><span class="chip light">1v1 vs AI</span><span class="chip light">2 players</span><span class="chip light">first to 3 games</span></div>
-        <div class="actions"><a class="play" href="/ace-alley/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/ace-alley">CODE</a></div>
+        <h2><a href="/ace-alley/">ACE <span>ALLEY</span></a></h2>
+        <p>Singles on public courts. When the train rumbles over Queens, the point counts double.</p>
+        <div class="meta"><span class="info">3 grounds · 1v1</span><a class="src" href="https://github.com/MuhammadaliMS/ace-alley">Code</a><span class="go" aria-hidden="true">PLAY</span></div>
       </div>
     </article>
 
     <article class="card badminton">
-      <div class="shot"><img src="img/shuttle-lane-hyderabad.jpg" alt="Clay diorama of a badminton game across a narrow Hyderabad lane with a rope for a net" width="1500" height="1000" loading="lazy"><span class="sport">STREET BADMINTON · HYDERABAD · JAKARTA · KL</span></div>
+      <div class="shot">
+        <img class="on" src="img/shuttle-lane-hyderabad.jpg" alt="Clay diorama of a badminton game across a narrow Hyderabad lane with a rope for a net" data-where="Hyderabad Gali" width="1500" height="1000" loading="lazy">
+        <img src="img/shuttle-lane-jakarta.jpg" alt="" data-where="Jakarta Kampung" loading="lazy">
+        <img src="img/shuttle-lane-kl.jpg" alt="" data-where="KL Flats" loading="lazy">
+        <span class="tag">BADMINTON</span><span class="where">Hyderabad Gali</span>
+      </div>
       <div class="body">
-        <h2>SHUTTLE <span>LANE</span></h2>
-        <p>Badminton over a rope tied across the lane. Smash, drop and clear, and stop when a scooter needs to get through.</p>
-        <div class="grounds three">
-          <div class="ground"><img src="img/shuttle-lane-hyderabad.jpg" alt="" loading="lazy"><span>Hyderabad Gali</span></div>
-          <div class="ground"><img src="img/shuttle-lane-jakarta.jpg" alt="" loading="lazy"><span>Jakarta Kampung</span></div>
-          <div class="ground"><img src="img/shuttle-lane-kl.jpg" alt="" loading="lazy"><span>KL Flats</span></div>
-        </div>
-        <div class="rule"><b>KL</b>Hit the laundry overhead and it's your fault.</div>
-        <div class="modes"><span class="chip light">1v1 vs AI</span><span class="chip light">2 players</span><span class="chip light">first to 15</span></div>
-        <div class="actions"><a class="play" href="/shuttle-lane/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/shuttle-lane">CODE</a></div>
+        <h2><a href="/shuttle-lane/">SHUTTLE <span>LANE</span></a></h2>
+        <p>Badminton over a rope across the lane. Stop play when a scooter comes through.</p>
+        <div class="meta"><span class="info">3 grounds · 1v1</span><a class="src" href="https://github.com/MuhammadaliMS/shuttle-lane">Code</a><span class="go" aria-hidden="true">PLAY</span></div>
       </div>
     </article>
 
     <article class="card hockey">
-      <div class="shot"><img src="img/puck-street-toronto.jpg" alt="Clay diorama of a snowy Toronto street with two hockey nets and red maple trees" width="1500" height="1000" loading="lazy"><span class="sport">STREET HOCKEY · TORONTO · MONTREAL · HELSINKI</span></div>
-      <div class="body">
-        <h2>PUCK <span>STREET</span></h2>
-        <p>Two on two ball hockey in the road. Stickhandle, pass and rip a slapshot, until somebody yells CAR!</p>
-        <div class="grounds three">
-          <div class="ground"><img src="img/puck-street-toronto.jpg" alt="" loading="lazy"><span>Toronto Street</span></div>
-          <div class="ground"><img src="img/puck-street-montreal.jpg" alt="" loading="lazy"><span>Montreal Ruelle</span></div>
-          <div class="ground"><img src="img/puck-street-helsinki.jpg" alt="" loading="lazy"><span>Helsinki Rink</span></div>
-        </div>
-        <div class="rule"><b>CAR!</b>Nets to the curb, let it pass, then game on.</div>
-        <div class="modes"><span class="chip light">2v2 with AI teammate</span><span class="chip light">2 players</span><span class="chip light">first to 7</span></div>
-        <div class="actions"><a class="play" href="/puck-street/">PLAY</a><a class="src" href="https://github.com/MuhammadaliMS/puck-street">CODE</a></div>
+      <div class="shot">
+        <img class="on" src="img/puck-street-toronto.jpg" alt="Clay diorama of a snowy Toronto street with two hockey nets and red maple trees" data-where="Toronto Street" width="1500" height="1000" loading="lazy">
+        <img src="img/puck-street-montreal.jpg" alt="" data-where="Montreal Ruelle" loading="lazy">
+        <img src="img/puck-street-helsinki.jpg" alt="" data-where="Helsinki Rink" loading="lazy">
+        <span class="tag">STREET HOCKEY</span><span class="where">Toronto Street</span>
       </div>
+      <div class="body">
+        <h2><a href="/puck-street/">PUCK <span>STREET</span></a></h2>
+        <p>Two on two ball hockey in the road, until somebody yells CAR!</p>
+        <div class="meta"><span class="info">3 grounds · 2v2</span><a class="src" href="https://github.com/MuhammadaliMS/puck-street">Code</a><span class="go" aria-hidden="true">PLAY</span></div>
+      </div>
+    </article>
+
+    <article class="card yours">
+      <span class="tag">OPEN SOURCE</span>
+      <h2><a href="https://github.com/MuhammadaliMS">YOUR <span>STREET</span> NEXT</a></h2>
+      <p>Every game here is a single HTML file. Fork one, swap in your own ground, and write your street's rules.</p>
+      <span class="go" aria-hidden="true">GET THE CODE</span>
     </article>
   </main>
 
   <footer>
     <p>On a phone, turn it sideways: every game plays in landscape with a thumb stick and action buttons. On a computer, the keys are listed on each game's start screen.</p>
-    <p>All seven games are open source on <a href="https://github.com/MuhammadaliMS">GitHub</a>.</p>
+    <p>Built with Claude. All seven games are on <a href="https://github.com/MuhammadaliMS">GitHub</a>.</p>
   </footer>
 </div>
+<script>
+// Hovering (or focusing) a card cycles through that game's grounds; leaving it goes back to the first.
+for (const card of document.querySelectorAll('.card')) {
+  const imgs = [...card.querySelectorAll('.shot img')], where = card.querySelector('.where');
+  if (imgs.length < 2) continue;
+  let i = 0, timer = null;
+  const show = n => { imgs[i].classList.remove('on'); i = n % imgs.length; imgs[i].classList.add('on'); where.textContent = imgs[i].dataset.where; };
+  const start = () => { if (!timer) { show(i + 1); timer = setInterval(() => show(i + 1), 1300); } };
+  const stop = () => { clearInterval(timer); timer = null; show(0); };
+  card.addEventListener('mouseenter', start); card.addEventListener('mouseleave', stop);
+  card.addEventListener('focusin', start); card.addEventListener('focusout', stop);
+}
+</script>
 </body>
 </html>
